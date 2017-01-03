@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Ace Kitchen Sink</title>
+    <meta name="author" content="Fabian Jakobs">
+    <!--
+    Ace
+      version 1.2.6
+      commit  
+    -->
+
+    <link rel="stylesheet" href="demo/kitchen-sink/styles.css" type="text/css" media="screen" charset="utf-8">
+    <script async="true" src="https://use.edgefonts.net/source-code-pro.js"></script>
+
+    <link href="./doc/site/images/favicon.ico" rel="icon" type="image/x-icon">
+
+
+  <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+  <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+  <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</head>
+<body>
+<div id="optionsPanel" style="position:absolute;height:100%;width:260px">
+  <a href="http://c9.io" title="Cloud9 IDE | Your code anywhere, anytime">
+    <img id="c9-logo" src="demo/kitchen-sink/logo.png" style="width: 172px;margin: -9px 30px -12px 51px;">
+    <!--<img id="c9-logo" src="demo/kitchen-sink/CerberAppsLogo.png" style="width: 170px;margin: 20px 30px -12px 51px;">-->
+  </a>
+
+
+  <div style="position: absolute; overflow: hidden; top:100px; bottom:0">
+  <div style="width: 100%; height:100%; overflow-y: scroll">
+    <div id="controls" class="col-sm-12">
+      <label for="doc">Document</label>
+      <select id="doc" size="1">
+      </select>
+      <label for="mode">Mode</label>
+      <select id="mode" size="1">
+      </select>
+      <label for="split">Split</label>
+      <select id="split" size="1">
+        <option value="none">None</option>
+        <option value="below">Below</option>
+        <option value="beside">Beside</option>
+      </select>
+      <label for="theme">Theme</label>
+      <select id="theme" size="1"></select>
+      <label for="fontsize">Font Size</label>
+      <select id="fontsize" size="1">
+        <option value="10px">10px</option>
+        <option value="11px">11px</option>
+        <option value="12px" selected="selected">12px</option>
+        <option value="13px">13px</option>
+        <option value="14px">14px</option>
+        <option value="16px">16px</option>
+        <option value="18px">18px</option>
+        <option value="20px">20px</option>
+        <option value="24px">24px</option>
+      </select>
+      <label for="folding">Code Folding</label>
+      <select id="folding" size="1">
+        <option value="manual">manual</option>
+        <option value="markbegin" selected="selected">mark begin</option>
+        <option value="markbeginend">mark begin and end</option>
+      </select>
+      <label for="keybinding">Key Binding</label>
+      <select id="keybinding" size="1">
+        <option value="ace">Ace</option>
+        <option value="vim">Vim</option>
+        <option value="emacs">Emacs</option>
+        <option value="custom">Custom</option>
+      </select>
+      <label for="soft_wrap">Soft Wrap</label>
+      <select id="soft_wrap" size="1">
+        <option value="off">Off</option>
+        <option value="40">40 Chars</option>
+        <option value="80">80 Chars</option>
+        <option value="free">Free</option>
+      </select>
+    </div>
+
+    <div id="more-controls" class="col-sm-12">
+      <label for="select_style">Full Line Selection</label>
+      <input type="checkbox" name="select_style" id="select_style" checked>
+      <label for="highlight_active">Highlight Active Line</label>
+      <input type="checkbox" name="highlight_active" id="highlight_active" checked>
+      <label for="show_hidden">Show Invisibles</label>
+      <input type="checkbox" name="show_hidden" id="show_hidden" checked>
+      <label for="display_indent_guides">Show Indent Guides</label>
+      <input type="checkbox" name="display_indent_guides" id="display_indent_guides" checked>
+      <label for="show_hscroll">Persistent HScroll</label>
+      <input type="checkbox" name="show_hscroll" id="show_hscroll">
+      <label for="show_hscroll">VScroll</label>
+      <input type="checkbox" name="show_vscroll" id="show_vscroll">
+      <label for="animate_scroll">Animate scrolling</label>
+
+      <input type="checkbox" name="animate_scroll" id="animate_scroll">
+      <label for="show_gutter">Show Gutter</label>
+      <input type="checkbox" id="show_gutter" checked>
+      <label for="show_print_margin">Show Print Margin</label>
+      <input type="checkbox" id="show_print_margin" checked>
+      <label for="soft_tab">Use Soft Tab</label>
+      <input type="checkbox" id="soft_tab" checked>
+      <label for="highlight_selected_word">Highlight selected word</label>
+      <input type="checkbox" id="highlight_selected_word" checked>
+      <label for="enable_behaviours">Enable Behaviours</label>
+      <input type="checkbox" id="enable_behaviours">
+      <label for="fade_fold_widgets">Fade Fold Widgets</label>
+      <input type="checkbox" id="fade_fold_widgets">
+      <label for="elastic_tabstops">Enable Elastic Tabstops</label>
+      <input type="checkbox" id="elastic_tabstops">
+      <label for="isearch">Incremental Search</label>
+      <input type="checkbox" id="isearch">
+      <label for="highlight_token">Show token info</label>
+      <input type="checkbox" id="highlight_token">
+      <label for="read_only">Read-only</label>
+      <input type="checkbox" id="read_only">
+      <label for="scrollPastEnd">Scroll Past End</label>
+      <input type="checkbox" id="scrollPastEnd" checked>
+
+<script>
+  $(function()
+  {
+    $(document).on('click', '.btn-add', function(e)
+    {
+      e.preventDefault();
+
+      var controlForm = $('.controls form:first'),
+              currentEntry = $(this).parents('.entry:first'),
+              newEntry = $(currentEntry.clone()).appendTo(controlForm);
+
+      newEntry.find('input').val('');
+      controlForm.find('.entry:not(:last) .btn-add')
+              .removeClass('btn-add').addClass('btn-remove')
+              .removeClass('btn-success').addClass('btn-danger')
+              .html('<span class="glyphicon glyphicon-minus"></span>');
+    }).on('click', '.btn-remove', function(e)
+    {
+      $(this).parents('.entry:first').remove();
+
+      e.preventDefault();
+      return false;
+    });
+  });
+</script>
+
+
+<style>
+  .entry:not(:first-of-type)
+  {
+    margin-top: 10px;
+  }
+
+  .glyphicon
+  {
+    font-size: 12px;
+  }
+</style>
+
+          <div class="control-group col-sm-12" id="fields">
+            <label class="control-label" for="field1">Nice Multiple Form Fields</label>
+            <div class="controls" id="field1">
+              <form role="form" autocomplete="off">
+                <div class="entry input-group col-sm-12">
+                  <input class="form-control" name="fields[]" type="text" placeholder="Type something" />
+                    	<span class="input-group-btn">
+                            <button class="btn btn-success btn-add" type="button">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </button>
+                        </span>
+                </div>
+              </form>
+              <br>
+              <small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)</small>
+            </div>
+          </div>
+
+      <input type="button" class="btn btn-success" value="Edit Snippets" onclick="env.editSnippets()">
+      <br>
+      <br>
+    </div>
+  </div>
+  </div>
+</div>
+    <!--<table id="controls">-->
+      <!--<tr>-->
+        <!--<td>-->
+          <!--<label for="doc">Document</label>-->
+        <!--</td><td>-->
+        <!--<select id="doc" size="1">-->
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td >-->
+          <!--<label for="mode">Mode</label>-->
+        <!--</td><td>-->
+        <!--<select id="mode" size="1">-->
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td>-->
+          <!--<label for="split">Split</label>-->
+        <!--</td><td>-->
+        <!--<select id="split" size="1">-->
+          <!--<option value="none">None</option>-->
+          <!--<option value="below">Below</option>-->
+          <!--<option value="beside">Beside</option>-->
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td >-->
+          <!--<label for="theme">Theme</label>-->
+        <!--</td><td>-->
+        <!--<select id="theme" size="1">-->
+
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td>-->
+          <!--<label for="fontsize">Font Size</label>-->
+        <!--</td><td>-->
+        <!--<select id="fontsize" size="1">-->
+          <!--<option value="10px">10px</option>-->
+          <!--<option value="11px">11px</option>-->
+          <!--<option value="12px" selected="selected">12px</option>-->
+          <!--<option value="13px">13px</option>-->
+          <!--<option value="14px">14px</option>-->
+          <!--<option value="16px">16px</option>-->
+          <!--<option value="18px">18px</option>-->
+          <!--<option value="20px">20px</option>-->
+          <!--<option value="24px">24px</option>-->
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td>-->
+          <!--<label for="folding">Code Folding</label>-->
+        <!--</td><td>-->
+        <!--<select id="folding" size="1">-->
+          <!--<option value="manual">manual</option>-->
+          <!--<option value="markbegin" selected="selected">mark begin</option>-->
+          <!--<option value="markbeginend">mark begin and end</option>-->
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td >-->
+          <!--<label for="keybinding">Key Binding</label>-->
+        <!--</td><td>-->
+        <!--<select id="keybinding" size="1">-->
+          <!--<option value="ace">Ace</option>-->
+          <!--<option value="vim">Vim</option>-->
+          <!--<option value="emacs">Emacs</option>-->
+          <!--<option value="custom">Custom</option>-->
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+      <!--<tr>-->
+        <!--<td >-->
+          <!--<label for="soft_wrap">Soft Wrap</label>-->
+        <!--</td><td>-->
+        <!--<select id="soft_wrap" size="1">-->
+          <!--<option value="off">Off</option>-->
+          <!--<option value="40">40 Chars</option>-->
+          <!--<option value="80">80 Chars</option>-->
+          <!--<option value="free">Free</option>-->
+        <!--</select>-->
+      <!--</td>-->
+      <!--</tr>-->
+
+      <!--<tr><td colspan="2" class="col-xs-6">-->
+        <!--<table id="more-controls" class>-->
+          <!--<tr>-->
+            <!--<td>-->
+              <!--<label for="select_style">Full Line Selection</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" name="select_style" id="select_style" checked>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td>-->
+              <!--<label for="highlight_active">Highlight Active Line</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" name="highlight_active" id="highlight_active" checked>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="show_hidden">Show Invisibles</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" name="show_hidden" id="show_hidden" checked>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="display_indent_guides">Show Indent Guides</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" name="display_indent_guides" id="display_indent_guides" checked>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="show_hscroll">Persistent HScroll</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" name="show_hscroll" id="show_hscroll">-->
+            <!--<label for="show_hscroll">VScroll</label>-->
+            <!--<input type="checkbox" name="show_vscroll" id="show_vscroll">-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="animate_scroll">Animate scrolling</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" name="animate_scroll" id="animate_scroll">-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="show_gutter">Show Gutter</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" id="show_gutter" checked>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="show_print_margin">Show Print Margin</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" id="show_print_margin" checked>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="soft_tab">Use Soft Tab</label>-->
+            <!--</td><td>-->
+            <!--<input type="checkbox" id="soft_tab" checked>-->
+          <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="highlight_selected_word">Highlight selected word</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="highlight_selected_word" checked>-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="enable_behaviours">Enable Behaviours</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="enable_behaviours">-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="fade_fold_widgets">Fade Fold Widgets</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="fade_fold_widgets">-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="elastic_tabstops">Enable Elastic Tabstops</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="elastic_tabstops">-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="isearch">Incremental Search</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="isearch">-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="highlight_token">Show token info</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="highlight_token">-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="read_only">Read-only</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="read_only">-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<tr>-->
+            <!--<td >-->
+              <!--<label for="scrollPastEnd">Scroll Past End</label>-->
+            <!--</td>-->
+            <!--<td>-->
+              <!--<input type="checkbox" id="scrollPastEnd" checked>-->
+            <!--</td>-->
+          <!--</tr>-->
+          <!--<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />-->
+          <!--<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>-->
+          <!--<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>-->
+
+          <!--&lt;!&ndash; Latest compiled and minified CSS &ndash;&gt;-->
+          <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+
+          <!--&lt;!&ndash; Optional theme &ndash;&gt;-->
+          <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">-->
+
+          <!--&lt;!&ndash; Latest compiled and minified JavaScript &ndash;&gt;-->
+          <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
+          <!--<style>-->
+            <!--.entry:not(:first-of-type)-->
+            <!--{-->
+              <!--margin-top: 10px;-->
+            <!--}-->
+
+            <!--.glyphicon-->
+            <!--{-->
+              <!--font-size: 12px;-->
+            <!--}-->
+          <!--</style>-->
+          <!--<script>-->
+            <!--$(function()-->
+            <!--{-->
+              <!--$(document).on('click', '.btn-add', function(e)-->
+              <!--{-->
+                <!--e.preventDefault();-->
+
+                <!--var controlForm = $('.controls form:first'),-->
+                        <!--currentEntry = $(this).parents('.entry:first'),-->
+                        <!--newEntry = $(currentEntry.clone()).appendTo(controlForm);-->
+
+                <!--newEntry.find('input').val('');-->
+                <!--controlForm.find('.entry:not(:last) .btn-add')-->
+                        <!--.removeClass('btn-add').addClass('btn-remove')-->
+                        <!--.removeClass('btn-success').addClass('btn-danger')-->
+                        <!--.html('<span class="glyphicon glyphicon-minus"></span>');-->
+              <!--}).on('click', '.btn-remove', function(e)-->
+              <!--{-->
+                <!--$(this).parents('.entry:first').remove();-->
+
+                <!--e.preventDefault();-->
+                <!--return false;-->
+              <!--});-->
+            <!--});-->
+
+          <!--</script>-->
+          <!--<tr>-->
+            <!--<td colspan="2">-->
+              <!--<div class="container">-->
+                <!--<div class="row">-->
+                  <!--<div class="control-group" id="fields">-->
+                    <!--<label class="control-label" for="field1">Nice Multiple Form Fields</label>-->
+                    <!--<div class="controls">-->
+                      <!--<form role="form" autocomplete="off">-->
+                        <!--<div class="entry input-group col-xs-3">-->
+                          <!--<input class="form-control" name="fields[]" type="text" placeholder="Type something" />-->
+                    	<!--<span class="input-group-btn">-->
+                            <!--<button class="btn btn-success btn-add" type="button">-->
+                                <!--<span class="glyphicon glyphicon-plus"></span>-->
+                            <!--</button>-->
+                        <!--</span>-->
+                        <!--</div>-->
+                      <!--</form>-->
+                      <!--<br>-->
+                      <!--<small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)</small>-->
+                    <!--</div>-->
+                  <!--</div>-->
+                <!--</div>-->
+              <!--</div>-->
+            <!--</td>-->
+            <!--<td colspan="2">-->
+              <!--<input type="button" value="Edit Snippets" onclick="env.editSnippets()">-->
+            <!--</td>-->
+          <!--</tr>-->
+        <!--</table>-->
+      <!--</td></tr>-->
+    <!--</table>-->
+    <!---->
+    <!---->
+  <!--&lt;!&ndash;<table id="controls">&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="doc">Document</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="doc" size="1">&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="mode">Mode</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="mode" size="1">&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="split">Split</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="split" size="1">&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="none">None</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="below">Below</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="beside">Beside</option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="theme">Theme</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="theme" size="1">&ndash;&gt;-->
+          <!--&lt;!&ndash;&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="fontsize">Font Size</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="fontsize" size="1">&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="10px">10px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="11px">11px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="12px" selected="selected">12px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="13px">13px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="14px">14px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="16px">16px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="18px">18px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="20px">20px</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="24px">24px</option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="folding">Code Folding</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="folding" size="1">&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="manual">manual</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="markbegin" selected="selected">mark begin</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="markbeginend">mark begin and end</option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="keybinding">Key Binding</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="keybinding" size="1">&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="ace">Ace</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="vim">Vim</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="emacs">Emacs</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="custom">Custom</option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="soft_wrap">Soft Wrap</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<select id="soft_wrap" size="1">&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="off">Off</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="40">40 Chars</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="80">80 Chars</option>&ndash;&gt;-->
+          <!--&lt;!&ndash;<option value="free">Free</option>&ndash;&gt;-->
+        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+
+    <!--&lt;!&ndash;<tr><td colspan="2" class="col-xs-6">&ndash;&gt;-->
+    <!--&lt;!&ndash;<table id="more-controls" class>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="select_style">Full Line Selection</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="select_style" id="select_style" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="highlight_active">Highlight Active Line</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="highlight_active" id="highlight_active" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="show_hidden">Show Invisibles</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="show_hidden" id="show_hidden" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="display_indent_guides">Show Indent Guides</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="display_indent_guides" id="display_indent_guides" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="show_hscroll">Persistent HScroll</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="show_hscroll" id="show_hscroll">&ndash;&gt;-->
+		<!--&lt;!&ndash;<label for="show_hscroll">VScroll</label>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="show_vscroll" id="show_vscroll">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="animate_scroll">Animate scrolling</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" name="animate_scroll" id="animate_scroll">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="show_gutter">Show Gutter</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="show_gutter" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="show_print_margin">Show Print Margin</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="show_print_margin" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="soft_tab">Use Soft Tab</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td><td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="soft_tab" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="highlight_selected_word">Highlight selected word</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="highlight_selected_word" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="enable_behaviours">Enable Behaviours</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="enable_behaviours">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="fade_fold_widgets">Fade Fold Widgets</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="fade_fold_widgets">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="elastic_tabstops">Enable Elastic Tabstops</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="elastic_tabstops">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="isearch">Incremental Search</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="isearch">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="highlight_token">Show token info</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="highlight_token">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="read_only">Read-only</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="read_only">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td >&ndash;&gt;-->
+        <!--&lt;!&ndash;<label for="scrollPastEnd">Scroll Past End</label>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td>&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="checkbox" id="scrollPastEnd" checked>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />&ndash;&gt;-->
+      <!--&lt;!&ndash;<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>&ndash;&gt;-->
+      <!--&lt;!&ndash;<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>&ndash;&gt;-->
+
+      <!--&lt;!&ndash;&lt;!&ndash; Latest compiled and minified CSS &ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">&ndash;&gt;-->
+
+      <!--&lt;!&ndash;&lt;!&ndash; Optional theme &ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">&ndash;&gt;-->
+
+      <!--&lt;!&ndash;&lt;!&ndash; Latest compiled and minified JavaScript &ndash;&gt;&ndash;&gt;-->
+      <!--&lt;!&ndash;<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>&ndash;&gt;-->
+      <!--&lt;!&ndash;<style>&ndash;&gt;-->
+        <!--&lt;!&ndash;.entry:not(:first-of-type)&ndash;&gt;-->
+        <!--&lt;!&ndash;{&ndash;&gt;-->
+          <!--&lt;!&ndash;margin-top: 10px;&ndash;&gt;-->
+        <!--&lt;!&ndash;}&ndash;&gt;-->
+
+        <!--&lt;!&ndash;.glyphicon&ndash;&gt;-->
+        <!--&lt;!&ndash;{&ndash;&gt;-->
+          <!--&lt;!&ndash;font-size: 12px;&ndash;&gt;-->
+        <!--&lt;!&ndash;}&ndash;&gt;-->
+      <!--&lt;!&ndash;</style>&ndash;&gt;-->
+      <!--&lt;!&ndash;<script>&ndash;&gt;-->
+        <!--&lt;!&ndash;$(function()&ndash;&gt;-->
+        <!--&lt;!&ndash;{&ndash;&gt;-->
+          <!--&lt;!&ndash;$(document).on('click', '.btn-add', function(e)&ndash;&gt;-->
+          <!--&lt;!&ndash;{&ndash;&gt;-->
+            <!--&lt;!&ndash;e.preventDefault();&ndash;&gt;-->
+
+            <!--&lt;!&ndash;var controlForm = $('.controls form:first'),&ndash;&gt;-->
+                    <!--&lt;!&ndash;currentEntry = $(this).parents('.entry:first'),&ndash;&gt;-->
+                    <!--&lt;!&ndash;newEntry = $(currentEntry.clone()).appendTo(controlForm);&ndash;&gt;-->
+
+            <!--&lt;!&ndash;newEntry.find('input').val('');&ndash;&gt;-->
+            <!--&lt;!&ndash;controlForm.find('.entry:not(:last) .btn-add')&ndash;&gt;-->
+                    <!--&lt;!&ndash;.removeClass('btn-add').addClass('btn-remove')&ndash;&gt;-->
+                    <!--&lt;!&ndash;.removeClass('btn-success').addClass('btn-danger')&ndash;&gt;-->
+                    <!--&lt;!&ndash;.html('<span class="glyphicon glyphicon-minus"></span>');&ndash;&gt;-->
+          <!--&lt;!&ndash;}).on('click', '.btn-remove', function(e)&ndash;&gt;-->
+          <!--&lt;!&ndash;{&ndash;&gt;-->
+            <!--&lt;!&ndash;$(this).parents('.entry:first').remove();&ndash;&gt;-->
+
+            <!--&lt;!&ndash;e.preventDefault();&ndash;&gt;-->
+            <!--&lt;!&ndash;return false;&ndash;&gt;-->
+          <!--&lt;!&ndash;});&ndash;&gt;-->
+        <!--&lt;!&ndash;});&ndash;&gt;-->
+
+      <!--&lt;!&ndash;</script>&ndash;&gt;-->
+    <!--&lt;!&ndash;<tr>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td colspan="2">&ndash;&gt;-->
+        <!--&lt;!&ndash;<div class="container">&ndash;&gt;-->
+          <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+            <!--&lt;!&ndash;<div class="control-group" id="fields">&ndash;&gt;-->
+              <!--&lt;!&ndash;<label class="control-label" for="field1">Nice Multiple Form Fields</label>&ndash;&gt;-->
+              <!--&lt;!&ndash;<div class="controls">&ndash;&gt;-->
+                <!--&lt;!&ndash;<form role="form" autocomplete="off">&ndash;&gt;-->
+                  <!--&lt;!&ndash;<div class="entry input-group col-xs-3">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<input class="form-control" name="fields[]" type="text" placeholder="Type something" />&ndash;&gt;-->
+                    	<!--&lt;!&ndash;<span class="input-group-btn">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<button class="btn btn-success btn-add" type="button">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="glyphicon glyphicon-plus"></span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</button>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</span>&ndash;&gt;-->
+                  <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</form>&ndash;&gt;-->
+                <!--&lt;!&ndash;<br>&ndash;&gt;-->
+                <!--&lt;!&ndash;<small>Press <span class="glyphicon glyphicon-plus gs"></span> to add another form field :)</small>&ndash;&gt;-->
+              <!--&lt;!&ndash;</div>&ndash;&gt;-->
+            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+          <!--&lt;!&ndash;</div>&ndash;&gt;-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+      <!--&lt;!&ndash;<td colspan="2">&ndash;&gt;-->
+        <!--&lt;!&ndash;<input type="button" value="Edit Snippets" onclick="env.editSnippets()">&ndash;&gt;-->
+      <!--&lt;!&ndash;</td>&ndash;&gt;-->
+    <!--&lt;!&ndash;</tr>&ndash;&gt;-->
+  <!--&lt;!&ndash;</table>&ndash;&gt;-->
+  <!--&lt;!&ndash;</td></tr>&ndash;&gt;-->
+  <!--&lt;!&ndash;</table>&ndash;&gt;-->
+  <!---->
+  <!--<a href="http://ace.c9.io">-->
+    <!--<img id="ace-logo" src="demo/kitchen-sink/ace-logo.png" style="width: 134px;margin: 46px 0px 4px 66px;">-->
+  <!--</a>-->
+  <!--<div><a target="_test" href="./lib/ace/test/tests.html"-->
+    <!--style="color: whitesmoke; text-align: left; padding: 1em;">tests</a>-->
+  <!--</div>-->
+  <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+  <div id="editor-container"></div>
+
+
+
+
+  <script src="src/ace.js" data-ace-base="src" type="text/javascript" charset="utf-8"></script>
+  <script src="src/keybinding-vim.js"></script>
+  <script src="src/keybinding-emacs.js"></script>
+  <script src="demo/kitchen-sink/demo.js"></script>
+  <script type="text/javascript" charset="utf-8">
+    require("kitchen-sink/demo");
+  </script>
+
+
+</body>
+</html>
